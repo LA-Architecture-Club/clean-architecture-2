@@ -1,5 +1,6 @@
-package io.pivotal.pulse;
+package io.pivotal.pulse.FrameworksAndDrivers;
 
+import io.pivotal.pulse.CleanPulseApplication;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,20 +21,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * An example of how one can test Spring Web MVC application from the controller, all the way down.
- *
- * See also:
- * http://docs.spring.io/spring-framework/docs/current/spring-framework-reference/htmlsingle/#spring-mvc-test-server
- *
- * Test matchers provided by "Hamcrest" (by way of Spring Boot):
- * https://code.google.com/p/hamcrest/wiki/Tutorial
- * http://hamcrest.org/JavaHamcrest/javadoc/
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = CleanPulseApplication.class)
 @WebAppConfiguration
-public class SampleIntegrationTest {
+public class ProjectIT {
     @Autowired
     private WebApplicationContext webApplicationContext;
     private MockMvc mockMvc;
@@ -44,15 +35,11 @@ public class SampleIntegrationTest {
     }
 
     @Test
-    public void test_that_a_page_contains_content() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/the-url"))
+    public void project_new_exists() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/project/new"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Thing Two"))) // ... using response matchers from Spring
+                .andExpect(content().string(containsString("Name:")))
+                .andExpect(content().string(containsString("Project Code:")))
                 .andReturn();
-
-        System.out.println(mvcResult.getResponse().getContentAsString());
-
-        // ... or dig into the result.
-        assertThat(mvcResult.getResolvedException(), is(nullValue()));
     }
 }

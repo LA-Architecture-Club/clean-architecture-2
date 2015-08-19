@@ -1,5 +1,8 @@
-package io.pivotal.pulse;
+package io.pivotal.pulse.FrameworksAndDrivers;
 
+import io.pivotal.pulse.CleanPulseApplication;
+import io.pivotal.pulse.InterfaceAdapters.ProjectController;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,43 +19,33 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * An example of how one can test Spring Web MVC application from the controller, all the way down.
- *
- * See also:
- * http://docs.spring.io/spring-framework/docs/current/spring-framework-reference/htmlsingle/#spring-mvc-test-server
- *
- * Test matchers provided by "Hamcrest" (by way of Spring Boot):
- * https://code.google.com/p/hamcrest/wiki/Tutorial
- * http://hamcrest.org/JavaHamcrest/javadoc/
- */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = CleanPulseApplication.class)
-@WebAppConfiguration
-public class SampleIntegrationTest {
-    @Autowired
-    private WebApplicationContext webApplicationContext;
+public class ProjectControllerTest {
     private MockMvc mockMvc;
 
     @Before
     public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new ProjectController()).build();
     }
 
     @Test
-    public void test_that_a_page_contains_content() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/the-url"))
+    public void project_new_exists() throws Exception {
+        mockMvc.perform(get("/projects/new"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Thing Two"))) // ... using response matchers from Spring
                 .andReturn();
+    }
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
-
-        // ... or dig into the result.
-        assertThat(mvcResult.getResolvedException(), is(nullValue()));
+    @Test
+    @Ignore
+    public void project_new_has_name() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/project/new"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Name:")))
+                .andExpect(content().string(containsString("Project Code:")))
+                .andReturn();
     }
 }
