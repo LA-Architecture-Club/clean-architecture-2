@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -25,27 +26,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ProjectControllerTest {
-    private MockMvc mockMvc;
+//    private MockMvc mockMvc;
 
-    @Before
-    public void setUp() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new ProjectController()).build();
-    }
-
-    @Test
-    public void project_new_exists() throws Exception {
-        mockMvc.perform(get("/projects/new"))
-                .andExpect(status().isOk())
-                .andReturn();
-    }
+//    @Before
+//    public void setUp() {
+//        this.mockMvc = MockMvcBuilders.standaloneSetup(new ProjectController()).build();
+//    }
 
     @Test
-    @Ignore
-    public void project_new_has_name() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/project/new"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Name:")))
-                .andExpect(content().string(containsString("Project Code:")))
-                .andReturn();
+    public void canGoToNewProjectPage() throws Exception {
+        assertEquals("project/new", new ProjectController().goToNewProjectPage());
     }
 }

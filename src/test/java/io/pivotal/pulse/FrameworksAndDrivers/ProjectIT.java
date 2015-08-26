@@ -1,6 +1,9 @@
 package io.pivotal.pulse.FrameworksAndDrivers;
 
 import io.pivotal.pulse.CleanPulseApplication;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +20,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,9 +40,9 @@ public class ProjectIT {
 
     @Test
     public void project_new_exists() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/project/new"))
+        MvcResult response = mockMvc.perform(get("/project/new"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Name:")))
+                .andExpect(content().string(containsString("Name:")))   //todo: move this into the ProjectTemplateTest
                 .andExpect(content().string(containsString("Project Code:")))
                 .andReturn();
     }
